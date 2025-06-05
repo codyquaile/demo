@@ -4,6 +4,17 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 
+const fs = require('fs');
+const path = require('path');
+
+const SERVICE_ACCOUNT_PATH = path.join(__dirname, 'credentials', 'service-account.json');
+
+// On startup, write the env var to a file if it doesn't exist
+if (!fs.existsSync(SERVICE_ACCOUNT_PATH)) {
+  fs.mkdirSync(path.dirname(SERVICE_ACCOUNT_PATH), { recursive: true });
+  fs.writeFileSync(SERVICE_ACCOUNT_PATH, process.env.GOOGLE_SERVICE_ACCOUNT_JSON, 'utf8');
+}
+
 // Place your service account JSON in backend/credentials/
 const SERVICE_ACCOUNT_FILE = path.join(__dirname, 'credentials', 'tactile-buckeye-300722-abf7b7618f14.json');
 const SHEET_ID = '1ipe_exMhLtcT045gIcwiUsZPzJbFZU1Ll_qAUpS2rro';
